@@ -1,49 +1,19 @@
 import { Client } from '@elastic/elasticsearch';
 import { Message } from './message';
+import { LAST_MESSAGE_QUERY, ALL_MESSAGES_QUERY } from './elasticsearch-queries';
 
-const client = new Client({ node: 'http://localhost:9200' })
+const ELASTICSEARCH_PORT = 9200;
+const client = new Client({ node: `http://localhost:${ELASTICSEARCH_PORT}` })
 
 export class MessageHandler {
     public static async getLastMessage() {
-        const { body } = await client.search({
-            index: 'message',
-            type: '_doc',
-            body: {
-                query: {
-                    match_all: {}
-                },
-                size: 1,
-                sort: [
-                    {
-                        timestamp: {
-                            order: "desc"
-                        }
-                    }
-                ]
-            }
-        })
+        const { body } = await client.search(LAST_MESSAGE_QUERY);
 
         return body.hits.hits[0];
     }
 
     public static async getAllMessages(): Promise<Message[]> {
-        const { body } = await client.search({
-            index: 'message',
-            type: '_doc',
-            body: {
-                query: {
-                    match_all: {}
-                },
-                size: 100,
-                sort: [
-                    {
-                        timestamp: {
-                            order: "desc"
-                        }
-                    }
-                ]
-            },
-        });
+        const { body } = await client.search(ALL_MESSAGES_QUERY);
 
         return body.hits.hits.map((message: any) => message._source);
     }
@@ -62,17 +32,9 @@ export class MessageHandler {
     }
 
     public static async indexIncomingMessage(message: Message) {
-
         message.timestamp = new Date().getTime();
-        message.answerId = "";
-
-        console.log()
-        if (message.content.charAt(message.content.length - 1).localeCompare('?') === 0) {
-            message.isQuestion = true;
-
-        } else {
-            message.isQuestion = false;
-        }
+        message.isQuestion =
+            message.content.charAt(message.content.length - 1).localeCompare('?') === 0;
 
         const insertedDocument = await client.index({
             index: 'message',
@@ -84,7 +46,10 @@ export class MessageHandler {
             const lastMessage = await MessageHandler.getLastMessage();
 
             if (lastMessage._source.isQuestion) {
-                await MessageHandler.updateAnswer(lastMessage._id, insertedDocument.body._id);
+                await MessageHandler.updateAnswer(
+                    lastMessage._id,
+                    insertedDocument.body._id
+                );
             }
         }
 

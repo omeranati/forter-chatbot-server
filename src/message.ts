@@ -1,6 +1,7 @@
 export interface Message {
     timestamp: number,
-    sender: string,
+    senderDisplayName: string,
+    senderUUID: string,
     content: string,
     isQuestion: boolean,
     answerId: string
