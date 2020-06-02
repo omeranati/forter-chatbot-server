@@ -10,9 +10,16 @@ const io = socketIO(http);
 
 io.on('connection', (socket: any) => {
     socket.on('incoming message', async (message: Message) => {
-        if (await MessageHandler.indexIncomingMessage(message)) {
-            io.emit('broadcast message', message)
+
+        if (message.senderUUID !== 'BOT') {
+            const result = await MessageHandler.indexIncomingMessage(message);
+
+            if (!result) {
+                return;
+            }
         }
+
+        io.emit('broadcast message', message)
     });
 });
 

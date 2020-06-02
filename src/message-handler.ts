@@ -34,7 +34,7 @@ export class MessageHandler {
     public static async indexIncomingMessage(message: Message) {
         message.timestamp = new Date().getTime();
         message.isQuestion =
-            message.content.charAt(message.content.length - 1).localeCompare('?') === 0;
+            message.content.charAt(message.content.length - 1) === '?';
 
         const insertedDocument = await client.index({
             index: 'message',
