@@ -16,6 +16,37 @@ export const LAST_MESSAGE_QUERY = {
     }
 };
 
+export const createSearchQuery = (messageContent: string) => {
+    return {
+        index: 'message',
+        type: '_doc',
+        body: {
+            query: {
+                bool: {
+                    must: [{
+                        match: {
+                            content: messageContent
+                        }
+                    },
+                    {
+                        exists: {
+                            field: 'answerId'
+                        }
+                    }]
+                }
+            },
+            size: 1,
+            sort: [
+                {
+                    timestamp: {
+                        order: "desc"
+                    }
+                }
+            ]
+        }
+    };
+}
+
 export const ALL_MESSAGES_QUERY = {
     index: 'message',
     type: '_doc',
