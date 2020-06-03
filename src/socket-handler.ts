@@ -50,8 +50,6 @@ io.on('connection', (socket: SocketIO.Socket) => {
     })
 });
 
-
-
 http.listen(3000, () => {
     console.log('listening on *:3000');
 });

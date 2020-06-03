@@ -25,7 +25,9 @@ export const createSearchQuery = (messageContent: string) => {
                 bool: {
                     must: [{
                         match: {
-                            content: messageContent
+                            content: {
+                                query: messageContent,
+                            }
                         }
                     },
                     {
