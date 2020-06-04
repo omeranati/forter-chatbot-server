@@ -17,7 +17,3 @@ Handles all the messages that users send
 4. ```cd ../```
 5. ```npm install```
 6. ```npm run start:dev```
-
-### License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
