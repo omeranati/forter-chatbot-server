@@ -5,11 +5,13 @@ import { Message } from './message';
 import { MessageHandler } from './message-handler';
 import { throttle, debounce } from 'throttle-debounce';
 
+export const BOT_ID = 'BOT';
+
 type TypingUsersMap = { [key: string]: Function };
 
-const app = express();
-const http = httpServer.createServer(app);
-const io = socketIO(http);
+const app: express.Express = express();
+const http: httpServer.Server = httpServer.createServer(app);
+const io: SocketIO.Server = socketIO(http);
 const typingUsers: TypingUsersMap = {};
 
 const sendNoTypingUsers = debounce(3000, () => {
@@ -17,7 +19,7 @@ const sendNoTypingUsers = debounce(3000, () => {
 });
 
 const sendTypingUsers = throttle(400, (typing: TypingUsersMap) => {
-    io.emit("currently typing", Object.keys(typing).length);
+    io.emit('currently typing', Object.keys(typing).length);
 });
 
 const schedualUUIDDeletion = (uuid: string) => {
@@ -32,7 +34,7 @@ const schedualUUIDDeletion = (uuid: string) => {
 
 io.on('connection', (socket: SocketIO.Socket) => {
     socket.on('incoming message', async (message: Message) => {
-        if (message.senderUUID !== 'BOT') {
+        if (message.senderUUID !== BOT_ID) {
             const result = await MessageHandler.indexIncomingMessage(message);
 
             if (!result) {
