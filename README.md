@@ -4,7 +4,7 @@ Handles all the messages that users send
 
 ### Prerequisites
 
-* ```git clone``` this repository.
+* ```git clone``` this repository
 * Make sure you have [docker](https://www.docker.com/get-started) installed on your machine
 * [Node.js](https://nodejs.org/en/download/) version ^10
 * [npm](https://www.npmjs.com/get-npm) version ^6
