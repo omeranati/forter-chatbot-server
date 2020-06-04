@@ -13,7 +13,7 @@ Handles all the messages that users send
 
 1. In the project dir, ```cd ./elasticsearch```
 2. ```docker build . -t elasticsearch:1.0.0```
-3. ```docker run -p 9200:2900 -p 9300:9300 -d elasticsearch:1.0.0```
+3. ```docker run -p 9200:9200 -p 9300:9300 -d elasticsearch:1.0.0```
 4. ```cd ../```
 5. ```npm install```
 6. ```npm run start:dev```
