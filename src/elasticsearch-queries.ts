@@ -9,7 +9,7 @@ export const LAST_MESSAGE_QUERY = {
         sort: [
             {
                 timestamp: {
-                    order: "desc"
+                    order: 'desc'
                 }
             }
         ]
@@ -41,7 +41,7 @@ export const createSearchQuery = (messageContent: string) => {
             sort: [
                 {
                     timestamp: {
-                        order: "desc"
+                        order: 'desc'
                     }
                 }
             ]
@@ -60,7 +60,7 @@ export const ALL_MESSAGES_QUERY = {
         sort: [
             {
                 timestamp: {
-                    order: "desc"
+                    order: 'desc'
                 }
             }
         ]
